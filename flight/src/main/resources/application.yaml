@@ -1,0 +1,15 @@
+spring:
+  sql:
+    init:
+      platform: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/MyApp
+    username: postgres
+    password: postgres
