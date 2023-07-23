@@ -16,7 +16,7 @@ public interface MapToReservation {
     @Mapping(target = "passengerClass", source = "dto.passengerClass")
     @Mapping(target = "price", source = "dto.price")
     @Mapping(target = "name", source = "account.name")
-    @Mapping(target = "lastname", source = "account.lastName")
+    @Mapping(target = "lastName", source = "account.lastName")
     @Mapping(target = "passeport", source = "account.passeport")
     @Mapping(target = "login", source = "account.login")
     Reservation mapToReservation(Plane plane, Account account, ReservationDto dto);
