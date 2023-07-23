@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.flight.dto.SearchCriteria;
 import org.flight.entity.Cities;
 import org.flight.entity.Plane;
-import org.flight.enums.PassengerClass;
 import org.flight.exception.FlightException;
 import org.flight.repository.CitiesRepository;
 import org.flight.repository.PlaneRepository;
@@ -13,10 +12,30 @@ import org.flight.service.FlightService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static org.flight.utils.FlightConsts.*;
+import static org.flight.utils.FlightConsts.PRESTATION_AFFAIR;
+import static org.flight.utils.FlightConsts.PRESTATION_AFFAIR_UE;
+import static org.flight.utils.FlightConsts.PRESTATION_ECONOMICS;
+import static org.flight.utils.FlightConsts.PRESTATION_ECONOMIC_UE;
+import static org.flight.utils.FlightConsts.PRESTATION_FIRST;
+import static org.flight.utils.FlightConsts.PRESTATION_FIRST_UE;
+import static org.flight.utils.FlightConsts.REDEVANCE_PASSENGER;
+import static org.flight.utils.FlightConsts.REDEVANCE_PASSENGER_MAX;
+import static org.flight.utils.FlightConsts.SECURITY_TAX;
+import static org.flight.utils.FlightConsts.SECURITY_TAX_MAX;
+import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_NON_UE;
+import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_NON_UE_MAX;
+import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_UE;
+import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_UE_MAX;
+import static org.flight.utils.FlightConsts.TAX_AV_CIVILE_FR;
+import static org.flight.utils.FlightConsts.TAX_AV_CIVILE_OTHER;
+import static org.flight.utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
+import static org.flight.utils.FlightConsts.UNABLE_TO_FIND_PLANE;
+import static org.flight.utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +59,13 @@ public class FlightServiceImpl implements FlightService {
         if (departure.isEmpty() || arrival.isEmpty()) {
             throw new FlightException(UNABLE_TO_RETRIEVE_CITIES);
         } else {
-            double lat1 = Math.toRadians(departure.get().getXCoordonates());
-            double lon1 = Math.toRadians(departure.get().getYCoordonates());
-            double lat2 = Math.toRadians(arrival.get().getXCoordonates());
-            double lon2 = Math.toRadians(arrival.get().getYCoordonates());
+            double lat1 = Math.toRadians(departure.get().getLattitude());
+            double lon1 = Math.toRadians(departure.get().getLongitude());
+            double lat2 = Math.toRadians(arrival.get().getLattitude());
+            double lon2 = Math.toRadians(arrival.get().getLongitude());
             double earthRadius = 6371.01;
-            return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+            double rawDistance = earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+            return formatResult(rawDistance);
         }
     }
 
@@ -56,9 +76,10 @@ public class FlightServiceImpl implements FlightService {
         Optional<Cities> arrival = citiesRepository.findById(criteria.getIdArrival());
 
         if (departure.isEmpty() || arrival.isEmpty()) {
-            throw new FlightException(UNABLE_TO_RETRIEVE_CITIES);
+            throw new FlightException(UNABLE_TO_CALCULATE_PRICE);
         } else {
-            return taxByClass(criteria.getPassengerClass().name(), departure.get(), arrival.get());
+            Double tax = taxByClass(criteria.getPassengerClass().name(), departure.get(), arrival.get());
+            return formatResult(tax);
         }
     }
 
@@ -66,36 +87,36 @@ public class FlightServiceImpl implements FlightService {
     public List<Plane> retrieveplanes() throws FlightException {
         try {
             return planeRepository.findAll();
-        }catch(DataAccessException e){
+        } catch (DataAccessException e) {
             throw new FlightException(UNABLE_TO_FIND_PLANE);
         }
     }
 
-    private double taxByClass(String passengerClass, Cities departure, Cities arrival){
-        double tax = 0;
-        if(departure.isUe() && arrival.isUe()){
-            if(passengerClass.equals(PassengerClass.FIRSTCLASS.name())){
-                 tax += PRESTATION_FIRST_UE + SOLIDARITY_TAX_UE_MAX + REDEVANCE_PASSENGER_MAX
+    private double taxByClass(String passengerClass, Cities departure, Cities arrival) {
+
+        if (departure.isUe() && arrival.isUe()) {
+            return switch (passengerClass) {
+                case "FIRSTCLASS" -> PRESTATION_FIRST_UE + SOLIDARITY_TAX_UE_MAX + REDEVANCE_PASSENGER_MAX
+                        + TAX_AV_CIVILE_FR + SECURITY_TAX_MAX;
+                case "AFFAIR" -> PRESTATION_AFFAIR_UE + SOLIDARITY_TAX_UE_MAX + REDEVANCE_PASSENGER_MAX
+                        + TAX_AV_CIVILE_FR + SECURITY_TAX_MAX;
+                default -> PRESTATION_ECONOMIC_UE + SOLIDARITY_TAX_UE + REDEVANCE_PASSENGER
                         + TAX_AV_CIVILE_FR + SECURITY_TAX;
-            }else if (passengerClass.equals(PassengerClass.AFFAIR.name())){
-                tax += PRESTATION_AFFAIR_UE + SOLIDARITY_TAX_UE_MAX + REDEVANCE_PASSENGER_MAX
-                        + TAX_AV_CIVILE_FR + SECURITY_TAX;
-            }else{
-                tax += PRESTATION_ECONOMIC_UE + SOLIDARITY_TAX_UE + REDEVANCE_PASSENGER
-                        + TAX_AV_CIVILE_FR + SECURITY_TAX;
-            }
-        }else{
-            if(passengerClass.equals(PassengerClass.FIRSTCLASS.name())){
-                tax += PRESTATION_FIRST + SOLIDARITY_TAX_NON_UE_MAX + REDEVANCE_PASSENGER_MAX
+            };
+        } else {
+            return switch (passengerClass) {
+                case "FIRSTCLASS" -> PRESTATION_FIRST + SOLIDARITY_TAX_NON_UE_MAX + REDEVANCE_PASSENGER_MAX
+                        + TAX_AV_CIVILE_OTHER + SECURITY_TAX_MAX;
+                case "AFFAIR" -> PRESTATION_AFFAIR + SOLIDARITY_TAX_NON_UE_MAX + REDEVANCE_PASSENGER_MAX
+                        + TAX_AV_CIVILE_OTHER + SECURITY_TAX_MAX;
+                default -> PRESTATION_ECONOMICS + SOLIDARITY_TAX_NON_UE + REDEVANCE_PASSENGER
                         + TAX_AV_CIVILE_OTHER + SECURITY_TAX;
-            }else if (passengerClass.equals(PassengerClass.AFFAIR.name())){
-                tax += PRESTATION_AFFAIR + SOLIDARITY_TAX_NON_UE_MAX + REDEVANCE_PASSENGER_MAX
-                        + TAX_AV_CIVILE_OTHER + SECURITY_TAX;
-            }else{
-                tax += PRESTATION_ECONOMICS + SOLIDARITY_TAX_NON_UE + REDEVANCE_PASSENGER
-                        + TAX_AV_CIVILE_OTHER + SECURITY_TAX;
-            }
+            };
         }
-    return tax;
+    }
+
+    private double formatResult(Double input) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return Double.parseDouble(decimalFormat.format(input).replace(",", "."));
     }
 }

@@ -1,22 +1,22 @@
 package org.flight.dto;
 
-import lombok.*;
-import org.flight.enums.PassengerClass;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.flight.entity.Plane;
+import org.flight.enums.PassengerClass;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProposedFlight extends SearchCriteria {
 
-    private String plane;
-
-    private LocalDateTime departureTime;
-
-    private LocalDateTime arrivalTime;
-    
-    private String escale;
+    private Plane plane;
 
     private double price;
 

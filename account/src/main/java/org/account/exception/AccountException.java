@@ -1,8 +1,6 @@
 package org.account.exception;
 
-import org.springframework.dao.DataAccessException;
-
-public class AccountException extends DataAccessException {
+public class AccountException extends Exception {
 
     public AccountException(String msg){
         super(msg);

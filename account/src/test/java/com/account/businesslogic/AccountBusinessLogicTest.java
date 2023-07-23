@@ -1,19 +1,28 @@
 package com.account.businesslogic;
 
+import org.account.businesslogic.AccountBusinessLogic;
 import org.account.entity.Account;
 import org.account.exception.AccountException;
 import org.account.repository.AccountRepository;
-import org.account.businesslogic.AccountBusinessLogic;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 
-import static org.account.utils.AccountConst.*;
+import static org.account.utils.AccountConst.DELETE_ERROR;
+import static org.account.utils.AccountConst.PERSIST_ERROR;
+import static org.account.utils.AccountConst.RETRIEVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AccountBusinessLogicTest {
@@ -32,7 +41,7 @@ class AccountBusinessLogicTest {
     private static final String PASSWORD = "password";
 
     @Test
-    void retrieveAccount(){
+    void retrieveAccount() throws AccountException {
        Account account = buildAccount();
        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(account);
        Account result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
@@ -40,16 +49,16 @@ class AccountBusinessLogicTest {
     }
 
     @Test
-    void retrieveAccountException(){
-        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenThrow((AccountException.class));
-        Exception exception = assertThrows(AccountException.class, () ->
-            businessLogic.retrieveAccount(LOGIN, PASSWORD));
+    void retrieveAccountException() {
+        doThrow(new DataAccessException("Error") {}).when(repository).retrieveAccount(LOGIN, PASSWORD);
+        Exception exception = assertThrows(AccountException.class,
+                () -> businessLogic.retrieveAccount(LOGIN, PASSWORD));
         assertNotNull(exception.getMessage());
         assertTrue(exception.getMessage().contains(RETRIEVE_ERROR));
     }
 
     @Test
-    void persistAccount(){
+    void persistAccount() throws AccountException {
         Account account = buildAccount();
         when(businessLogic.persistAccount(account)).thenReturn(account);
         Account result = businessLogic.persistAccount(account);
@@ -57,9 +66,9 @@ class AccountBusinessLogicTest {
     }
 
     @Test
-    void persistAccountException(){
+    void persistAccountException() {
         Account account = buildAccount();
-        when(businessLogic.persistAccount(account)).thenThrow((AccountException.class));
+        doThrow(new DataAccessException("Error") {}).when(repository).save(account);
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.persistAccount(account));
         assertNotNull(exception.getMessage());
@@ -67,16 +76,16 @@ class AccountBusinessLogicTest {
     }
 
     @Test
-    void deleteAccount(){
+    void deleteAccount() throws AccountException {
         businessLogic.deleteAccount(1);
         verify(repository, atLeastOnce()).deleteById(anyInt());
     }
 
     @Test
-    void deleteAccountException(){
-        doThrow(new AccountException(DELETE_ERROR)).when(businessLogicMock).deleteAccount(1);
+    void deleteAccountException() {
+        doThrow(new DataAccessException("Error") {}).when(repository).deleteById(1);
         Exception exception = assertThrows(AccountException.class,
-                () -> businessLogicMock.deleteAccount(1));
+                () -> businessLogic.deleteAccount(1));
         assertNotNull(exception.getMessage());
         assertTrue(exception.getMessage().contains(DELETE_ERROR));
     }

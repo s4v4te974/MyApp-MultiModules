@@ -1,4 +1,4 @@
-package org.account.controller;
+package org.ws.account;
 
 import org.account.exception.AccountException;
 import org.springframework.http.HttpStatus;

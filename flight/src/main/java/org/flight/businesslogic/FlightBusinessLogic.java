@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class FlightBusinessLogic {
         return flightService.availableCities();
     }
 
-    public List<ProposedFlight> proposedFlights(SearchCriteria criteria) throws FlightException {
+    public List<ProposedFlight> availableFlights(SearchCriteria criteria) throws FlightException {
         double distance = flightService.calculateDistance(criteria.getIdDeparture(), criteria.getIdArrival());
         List<Plane> planes = flightService.retrieveplanes();
         Plane plane = planes.stream().filter(p -> p.getRange() > distance
@@ -40,13 +40,22 @@ public class FlightBusinessLogic {
         double price = calculatePrice(criteria);
         double finalPrice = calculateFinalPrice(plane.getConso(), distance, price);
 
-        
+        ProposedFlight proposedFlight = ProposedFlight.builder() //
+                .price(finalPrice) //
+                .passengerClass(criteria.getPassengerClass()) //
+                .plane(plane) //
+                .build();
 
-        return Collections.emptyList();
+        return new ArrayList<>(Collections.singletonList(proposedFlight));
     }
 
     private double calculatePrice(SearchCriteria criteria) throws FlightException {
-        double priceByClass = flightService.calculatePrice(criteria);
+        double priceByClass = 0;
+        try {
+           priceByClass = flightService.calculatePrice(criteria);
+        } catch (FlightException e) {
+            throw new FlightException(e.getMessage());
+        }
         double priceMonth = priceByMonth(criteria.getDate(), priceByClass);
         return priceByDay(criteria.getDate(), priceMonth);
     }

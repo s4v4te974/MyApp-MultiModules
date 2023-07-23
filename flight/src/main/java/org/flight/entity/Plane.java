@@ -1,12 +1,24 @@
 package org.flight.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 @Getter
 @Entity
+@Builder
 @Table(name = "plane")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Plane {
 
     @Id
@@ -14,8 +26,8 @@ public class Plane {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "company")
-    private String company;
+    @Column(name = "builder")
+    private String builder;
 
     @Column(name = "model")
     private String model;
@@ -28,5 +40,8 @@ public class Plane {
 
     @Column(name = "consommation")
     private double conso;
+
+    @Column(name = "vitesse_moyenne")
+    private double speed;
 
 }

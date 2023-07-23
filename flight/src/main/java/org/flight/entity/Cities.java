@@ -1,14 +1,16 @@
 package org.flight.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "cities")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cities {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,11 +26,11 @@ public class Cities {
     @Column(name = "ue")
     private boolean isUe;
 
-    @Column(name = "xCoordonates")
-    private double xCoordonates;
+    @Column(name = "lattitude")
+    private double lattitude;
 
-    @Column(name = "yCoordonates")
-    private double yCoordonates;
+    @Column(name = "longitude")
+    private double longitude;
 
 
 

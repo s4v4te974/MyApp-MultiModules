@@ -1,14 +1,16 @@
 package org.account.businesslogic;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.account.entity.Account;
 import org.account.exception.AccountException;
 import org.account.repository.AccountRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import static org.account.utils.AccountConst.*;
+import static org.account.utils.AccountConst.DELETE_ERROR;
+import static org.account.utils.AccountConst.PERSIST_ERROR;
+import static org.account.utils.AccountConst.RETRIEVE_ERROR;
 
 
 @Slf4j
@@ -30,6 +32,26 @@ public class AccountBusinessLogic {
         try {
             accountRepository.save(account);
             return account;
+        } catch (DataAccessException dae) {
+            throw new AccountException(PERSIST_ERROR);
+        }
+    }
+
+    public Account updateAccount(Account accountToUpdate) throws AccountException {
+        try {
+            Account account = accountRepository.findById(accountToUpdate.getId()).orElse(null);
+            if (account != null) {
+                account.setName(accountToUpdate.getName());
+                account.setLastName(accountToUpdate.getLastName());
+                account.setEmail(accountToUpdate.getEmail());
+                account.setLogin(accountToUpdate.getLogin());
+                account.setPassword(accountToUpdate.getPassword());
+                account.setPasseport(accountToUpdate.getPasseport());
+                accountRepository.save(account);
+                return account;
+            } else {
+                throw new AccountException(PERSIST_ERROR);
+            }
         } catch (DataAccessException dae) {
             throw new AccountException(PERSIST_ERROR);
         }
