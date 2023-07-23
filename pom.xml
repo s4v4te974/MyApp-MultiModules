@@ -23,7 +23,7 @@
     </modules>
 
     <properties>
-        <sonar.projectKey>user</sonar.projectKey>
+        <sonar.projectKey>MyAppMultiModules</sonar.projectKey>
     </properties>
     <dependencies>
         <dependency>
