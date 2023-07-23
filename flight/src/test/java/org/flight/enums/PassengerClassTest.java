@@ -11,16 +11,16 @@ class PassengerClassTest {
 
     @Test
     void passengerEconomics(){
-        assertEquals(PassengerClass.ECONOMIC.name(), "ECONOMIC");
+        assertEquals("ECONOMIC", PassengerClass.ECONOMIC.name());
     }
 
     @Test
     void passengerAffair(){
-        assertEquals(PassengerClass.AFFAIR.name(), "AFFAIR");
+        assertEquals("AFFAIR", PassengerClass.AFFAIR.name());
     }
 
     @Test
     void passengerFirstClass(){
-        assertEquals(PassengerClass.FIRSTCLASS.name(), "FIRSTCLASS");
+        assertEquals("FIRSTCLASS", PassengerClass.FIRSTCLASS.name());
     }
 }

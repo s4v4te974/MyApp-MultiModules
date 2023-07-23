@@ -43,12 +43,12 @@ public class FlightConsts {
 
     public static final String UNABLE_TO_FIND_PLANE = "Unable to retrieve planes";
 
-    public final static String DEPARTURE_MORNING = "09:00";
+    public static final String DEPARTURE_MORNING = "09:00";
 
-    public final static String DEPARTURE_MID_DAY = "12:00";
+    public static final String DEPARTURE_MID_DAY = "12:00";
 
-    public final static String DEPARTURE_AFTERNOON = "15:00";
+    public static final String DEPARTURE_AFTERNOON = "15:00";
 
-    public final static String DEPARTURE_NIGHT_FLY = "21:00";
+    public static final String DEPARTURE_NIGHT_FLY = "21:00";
 
 }
