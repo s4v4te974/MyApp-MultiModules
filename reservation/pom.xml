@@ -16,6 +16,14 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.projectKey>reservation</sonar.projectKey>
+        <sonar.coverage.exclusions>
+            src/main/java/com/repository/**,
+            src/main/java/com/entity/**,
+            src/main/java/com/utils/**,
+            src/main/java/com/exception/**,
+            src/main/java/com/dto/**
+        </sonar.coverage.exclusions>
     </properties>
     <dependencies>
         <dependency>
@@ -43,7 +51,7 @@
     </dependencies>
 
     <build>
-        <finalName>flight</finalName>
+        <finalName>reservation</finalName>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>

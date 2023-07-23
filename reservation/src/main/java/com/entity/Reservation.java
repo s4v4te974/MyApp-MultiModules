@@ -1,6 +1,7 @@
 package com.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,16 +31,16 @@ public class Reservation {
     private String name;
 
     @Column(name= "lastName")
-    private String lastname;
+    private String lastName;
 
     @Column(name = "passeport")
     private String passeport;
 
-    @Column(name = "planeref")
+    @Column(name = "planeRef")
     private String planeRef;
 
     @Column(name = "price")
-    private double price;
+    private String price;
 
     @Column(name = "login")
     private String login;

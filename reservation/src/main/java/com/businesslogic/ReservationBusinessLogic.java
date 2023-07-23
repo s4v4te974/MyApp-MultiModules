@@ -22,9 +22,9 @@ public class ReservationBusinessLogic {
 
     private final ReservationService reservationService;
 
-    public Reservation retrieveReservation(RetrieveReservationDto reservation) throws ReservationException {
+    public Reservation retrieveReservation(RetrieveReservationDto dto) throws ReservationException {
         try{
-            return reservationRepository.retrieveReservationByReference(reservation.getReference(), reservation.getLogin());
+            return reservationRepository.retrieveReservationByReference(dto.getReference(), dto.getLogin());
         }catch (DataAccessException dae){
             throw new ReservationException(UNABLE_TO_RETRIEVE_RESERVATION);
         }

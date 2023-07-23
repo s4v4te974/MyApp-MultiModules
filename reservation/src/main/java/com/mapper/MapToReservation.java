@@ -7,7 +7,7 @@ import com.entity.Reservation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper()
 public interface MapToReservation {
 
     @Mapping(target = "reference", ignore = true)
