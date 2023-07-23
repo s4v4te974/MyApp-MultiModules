@@ -27,27 +27,25 @@ import static utils.AccountConst.RETRIEVE_ERROR;
 @ExtendWith(MockitoExtension.class)
 class AccountBusinessLogicTest {
 
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
     @InjectMocks
     AccountBusinessLogic businessLogic;
-
     @Mock
     AccountRepository repository;
 
-    private static final String LOGIN = "login";
-
-    private static final String PASSWORD = "password";
-
     @Test
     void retrieveAccount() throws AccountException {
-       Account account = buildAccount();
-       when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(account);
-       Account result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
-       assertThat(account).isEqualTo(result);
+        Account account = buildAccount();
+        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(account);
+        Account result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
+        assertThat(account).isEqualTo(result);
     }
 
     @Test
     void retrieveAccountException() {
-        doThrow(new DataAccessException("Error") {}).when(repository).retrieveAccount(LOGIN, PASSWORD);
+        doThrow(new DataAccessException("Error") {
+        }).when(repository).retrieveAccount(LOGIN, PASSWORD);
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.retrieveAccount(LOGIN, PASSWORD));
         assertNotNull(exception.getMessage());
@@ -65,7 +63,8 @@ class AccountBusinessLogicTest {
     @Test
     void persistAccountException() {
         Account account = buildAccount();
-        doThrow(new DataAccessException("Error") {}).when(repository).save(account);
+        doThrow(new DataAccessException("Error") {
+        }).when(repository).save(account);
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.persistAccount(account));
         assertNotNull(exception.getMessage());
@@ -80,14 +79,15 @@ class AccountBusinessLogicTest {
 
     @Test
     void deleteAccountException() {
-        doThrow(new DataAccessException("Error") {}).when(repository).deleteById(1);
+        doThrow(new DataAccessException("Error") {
+        }).when(repository).deleteById(1);
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.deleteAccount(1));
         assertNotNull(exception.getMessage());
         assertTrue(exception.getMessage().contains(DELETE_ERROR));
     }
 
-    private Account buildAccount(){
+    private Account buildAccount() {
         return Account.builder()
                 .id(0) //
                 .name("name") //

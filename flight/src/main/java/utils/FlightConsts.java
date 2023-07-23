@@ -32,14 +32,14 @@ public class FlightConsts {
     public static final double PRESTATION_ECONOMIC_UE = 25.0;
 
     public static final double PRESTATION_ECONOMICS = 50.0;
-    
+
     public static final double PRESTATION_AFFAIR_UE = 100.0;
 
     public static final double PRESTATION_AFFAIR = 200.0;
 
     public static final double PRESTATION_FIRST_UE = 800.0;
-    
-    public static final double PRESTATION_FIRST = 2000.0 ;
+
+    public static final double PRESTATION_FIRST = 2000.0;
 
     public static final String UNABLE_TO_FIND_PLANE = "Unable to retrieve planes";
 

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,18 +37,14 @@ import static utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
 @ExtendWith(MockitoExtension.class)
 class FlightServiceTest {
 
+    private static Cities city1;
+    private static Cities city2;
     @InjectMocks
     FlightServiceImpl flightService;
-
     @Mock
     PlaneRepository planeRepository;
-
     @Mock
     CitiesRepository citiesRepository;
-
-    private static Cities city1;
-
-    private static Cities city2;
 
     @BeforeAll
     static void setUp() {

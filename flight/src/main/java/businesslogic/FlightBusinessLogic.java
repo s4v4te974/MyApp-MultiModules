@@ -33,7 +33,7 @@ public class FlightBusinessLogic {
         List<Plane> planes = flightService.retrieveplanes();
         Plane plane = planes.stream().filter(p -> p.getRange() > distance
                 && p.isAvailable()).findFirst().orElse(null);
-        if(plane == null){
+        if (plane == null) {
             return Collections.emptyList();
         }
         double price = calculatePrice(criteria);
@@ -51,7 +51,7 @@ public class FlightBusinessLogic {
     private double calculatePrice(SearchCriteria criteria) throws FlightException {
         double priceByClass = 0;
         try {
-           priceByClass = flightService.calculatePrice(criteria);
+            priceByClass = flightService.calculatePrice(criteria);
         } catch (FlightException e) {
             throw new FlightException(e.getMessage());
         }
@@ -59,7 +59,7 @@ public class FlightBusinessLogic {
         return priceByDay(criteria.getDate(), priceMonth);
     }
 
-    private double priceByDay(LocalDateTime date, double tax){
+    private double priceByDay(LocalDateTime date, double tax) {
         DayOfWeek day = date.getDayOfWeek();
         double price;
         switch (day) {
@@ -72,7 +72,7 @@ public class FlightBusinessLogic {
         return tax + purcentage;
     }
 
-    private double priceByMonth(LocalDateTime date, double tax){
+    private double priceByMonth(LocalDateTime date, double tax) {
         Month month = date.getMonth();
         double price;
         switch (month) {
@@ -84,7 +84,7 @@ public class FlightBusinessLogic {
         return tax + purcentage;
     }
 
-    private double calculateFinalPrice(double conso, double distance, double price){
+    private double calculateFinalPrice(double conso, double distance, double price) {
         double totalPrice = (distance / 100) * conso;
         return (totalPrice * 1.18) + price;
     }

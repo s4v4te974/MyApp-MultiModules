@@ -10,17 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PassengerClassTest {
 
     @Test
-    void passengerEconomics(){
+    void passengerEconomics() {
         assertEquals("ECONOMIC", PassengerClass.ECONOMIC.name());
     }
 
     @Test
-    void passengerAffair(){
+    void passengerAffair() {
         assertEquals("AFFAIR", PassengerClass.AFFAIR.name());
     }
 
     @Test
-    void passengerFirstClass(){
+    void passengerFirstClass() {
         assertEquals("FIRSTCLASS", PassengerClass.FIRSTCLASS.name());
     }
 }

@@ -42,15 +42,4 @@ public class Cities {
     private double longitude;
 
 
-
-
-
-
-
-
-
-
-
-
-
 }
