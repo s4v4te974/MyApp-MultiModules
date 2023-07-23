@@ -1,4 +1,4 @@
-package org.account.utils;
+package utils;
 
 import lombok.experimental.UtilityClass;
 

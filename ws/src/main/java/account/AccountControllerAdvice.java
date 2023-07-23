@@ -1,6 +1,6 @@
-package org.ws.account;
+package account;
 
-import org.account.exception.AccountException;
+import exception.AccountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

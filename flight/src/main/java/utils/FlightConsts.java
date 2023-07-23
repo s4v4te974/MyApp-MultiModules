@@ -1,4 +1,4 @@
-package org.flight.utils;
+package utils;
 
 import lombok.experimental.UtilityClass;
 

@@ -1,17 +1,17 @@
-package org.flight.businesslogic;
+package businesslogic;
 
-import org.flight.dto.ProposedFlight;
-import org.flight.dto.SearchCriteria;
-import org.flight.entity.Plane;
-import org.flight.enums.PassengerClass;
-import org.flight.exception.FlightException;
-import org.flight.service.FlightService;
+import dto.ProposedFlight;
+import dto.SearchCriteria;
+import entity.Plane;
+import enums.PassengerClass;
+import exception.FlightException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import service.FlightService;
 
 import java.time.LocalDateTime;
 import java.time.Month;

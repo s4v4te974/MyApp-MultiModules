@@ -1,6 +1,7 @@
-package org.flight.repository;
+package repository;
 
-import org.flight.entity.Cities;
+
+import entity.Cities;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,16 +1,16 @@
-package org.account.businesslogic;
+package businesslogic;
 
+import entity.Account;
+import exception.AccountException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.account.entity.Account;
-import org.account.exception.AccountException;
-import org.account.repository.AccountRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import repository.AccountRepository;
 
-import static org.account.utils.AccountConst.DELETE_ERROR;
-import static org.account.utils.AccountConst.PERSIST_ERROR;
-import static org.account.utils.AccountConst.RETRIEVE_ERROR;
+import static utils.AccountConst.DELETE_ERROR;
+import static utils.AccountConst.PERSIST_ERROR;
+import static utils.AccountConst.RETRIEVE_ERROR;
 
 
 @Slf4j

@@ -1,9 +1,10 @@
-package org.flight.service;
+package service;
 
-import org.flight.dto.SearchCriteria;
-import org.flight.entity.Cities;
-import org.flight.entity.Plane;
-import org.flight.exception.FlightException;
+
+import dto.SearchCriteria;
+import entity.Cities;
+import entity.Plane;
+import exception.FlightException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

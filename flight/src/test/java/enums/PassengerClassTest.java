@@ -1,4 +1,4 @@
-package org.flight.enums;
+package enums;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

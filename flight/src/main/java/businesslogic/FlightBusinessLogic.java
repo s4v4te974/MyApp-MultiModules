@@ -1,19 +1,18 @@
-package org.flight.businesslogic;
+package businesslogic;
 
+import dto.ProposedFlight;
+import dto.SearchCriteria;
+import entity.Cities;
+import entity.Plane;
+import exception.FlightException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.flight.dto.ProposedFlight;
-import org.flight.dto.SearchCriteria;
-import org.flight.entity.Cities;
-import org.flight.entity.Plane;
-import org.flight.exception.FlightException;
-import org.flight.service.FlightService;
 import org.springframework.stereotype.Service;
+import service.FlightService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

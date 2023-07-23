@@ -1,4 +1,4 @@
-package org.flight.enums;
+package enums;
 
 public enum PassengerClass {
     ECONOMIC,

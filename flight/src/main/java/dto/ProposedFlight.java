@@ -1,13 +1,13 @@
-package org.flight.dto;
+package dto;
 
-
+import entity.Plane;
+import enums.PassengerClass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.flight.entity.Plane;
-import org.flight.enums.PassengerClass;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Data

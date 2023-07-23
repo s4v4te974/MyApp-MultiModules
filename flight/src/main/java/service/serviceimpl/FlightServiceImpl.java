@@ -1,40 +1,40 @@
-package org.flight.service.serviceimpl;
+package service.serviceimpl;
 
+import dto.SearchCriteria;
+import entity.Cities;
+import entity.Plane;
+import exception.FlightException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.flight.dto.SearchCriteria;
-import org.flight.entity.Cities;
-import org.flight.entity.Plane;
-import org.flight.exception.FlightException;
-import org.flight.repository.CitiesRepository;
-import org.flight.repository.PlaneRepository;
-import org.flight.service.FlightService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import repository.CitiesRepository;
+import repository.PlaneRepository;
+import service.FlightService;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static org.flight.utils.FlightConsts.PRESTATION_AFFAIR;
-import static org.flight.utils.FlightConsts.PRESTATION_AFFAIR_UE;
-import static org.flight.utils.FlightConsts.PRESTATION_ECONOMICS;
-import static org.flight.utils.FlightConsts.PRESTATION_ECONOMIC_UE;
-import static org.flight.utils.FlightConsts.PRESTATION_FIRST;
-import static org.flight.utils.FlightConsts.PRESTATION_FIRST_UE;
-import static org.flight.utils.FlightConsts.REDEVANCE_PASSENGER;
-import static org.flight.utils.FlightConsts.REDEVANCE_PASSENGER_MAX;
-import static org.flight.utils.FlightConsts.SECURITY_TAX;
-import static org.flight.utils.FlightConsts.SECURITY_TAX_MAX;
-import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_NON_UE;
-import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_NON_UE_MAX;
-import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_UE;
-import static org.flight.utils.FlightConsts.SOLIDARITY_TAX_UE_MAX;
-import static org.flight.utils.FlightConsts.TAX_AV_CIVILE_FR;
-import static org.flight.utils.FlightConsts.TAX_AV_CIVILE_OTHER;
-import static org.flight.utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
-import static org.flight.utils.FlightConsts.UNABLE_TO_FIND_PLANE;
-import static org.flight.utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
+import static utils.FlightConsts.PRESTATION_AFFAIR;
+import static utils.FlightConsts.PRESTATION_AFFAIR_UE;
+import static utils.FlightConsts.PRESTATION_ECONOMICS;
+import static utils.FlightConsts.PRESTATION_ECONOMIC_UE;
+import static utils.FlightConsts.PRESTATION_FIRST;
+import static utils.FlightConsts.PRESTATION_FIRST_UE;
+import static utils.FlightConsts.REDEVANCE_PASSENGER;
+import static utils.FlightConsts.REDEVANCE_PASSENGER_MAX;
+import static utils.FlightConsts.SECURITY_TAX;
+import static utils.FlightConsts.SECURITY_TAX_MAX;
+import static utils.FlightConsts.SOLIDARITY_TAX_NON_UE;
+import static utils.FlightConsts.SOLIDARITY_TAX_NON_UE_MAX;
+import static utils.FlightConsts.SOLIDARITY_TAX_UE;
+import static utils.FlightConsts.SOLIDARITY_TAX_UE_MAX;
+import static utils.FlightConsts.TAX_AV_CIVILE_FR;
+import static utils.FlightConsts.TAX_AV_CIVILE_OTHER;
+import static utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
+import static utils.FlightConsts.UNABLE_TO_FIND_PLANE;
+import static utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
 
 
 @Service

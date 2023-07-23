@@ -1,13 +1,11 @@
-package org.flight.service;
+package service;
 
-import org.flight.dto.SearchCriteria;
-import org.flight.entity.Cities;
-import org.flight.entity.Plane;
-import org.flight.enums.PassengerClass;
-import org.flight.exception.FlightException;
-import org.flight.repository.CitiesRepository;
-import org.flight.repository.PlaneRepository;
-import org.flight.service.serviceimpl.FlightServiceImpl;
+
+import dto.SearchCriteria;
+import entity.Cities;
+import entity.Plane;
+import enums.PassengerClass;
+import exception.FlightException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,15 +13,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
+import repository.CitiesRepository;
+import repository.PlaneRepository;
+import service.serviceimpl.FlightServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.flight.utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
-import static org.flight.utils.FlightConsts.UNABLE_TO_FIND_PLANE;
-import static org.flight.utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
+import static utils.FlightConsts.UNABLE_TO_FIND_PLANE;
+import static utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
 
 @ExtendWith(MockitoExtension.class)
 class FlightServiceTest {

@@ -1,19 +1,16 @@
-package com.account.businesslogic;
+package businesslogic;
 
-import org.account.businesslogic.AccountBusinessLogic;
-import org.account.entity.Account;
-import org.account.exception.AccountException;
-import org.account.repository.AccountRepository;
+
+import entity.Account;
+import exception.AccountException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
+import repository.AccountRepository;
 
-import static org.account.utils.AccountConst.DELETE_ERROR;
-import static org.account.utils.AccountConst.PERSIST_ERROR;
-import static org.account.utils.AccountConst.RETRIEVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,15 +20,15 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static utils.AccountConst.DELETE_ERROR;
+import static utils.AccountConst.PERSIST_ERROR;
+import static utils.AccountConst.RETRIEVE_ERROR;
 
 @ExtendWith(MockitoExtension.class)
 class AccountBusinessLogicTest {
 
     @InjectMocks
     AccountBusinessLogic businessLogic;
-
-    @Mock
-    AccountBusinessLogic businessLogicMock;
 
     @Mock
     AccountRepository repository;

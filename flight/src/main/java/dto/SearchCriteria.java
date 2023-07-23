@@ -1,10 +1,10 @@
-package org.flight.dto;
+package dto;
 
+import enums.PassengerClass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.flight.enums.PassengerClass;
 
 import java.time.LocalDateTime;
 

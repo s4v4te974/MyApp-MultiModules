@@ -1,4 +1,4 @@
-package org.account.exception;
+package exception;
 
 public class AccountException extends Exception {
 
