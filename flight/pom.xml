@@ -20,7 +20,9 @@
         <sonar.coverage.exclusions>
             src/main/java/repository/**,
             src/main/java/entity/**,
-            src/main/java/utils/**
+            src/main/java/utils/**,
+            src/main/java/exception/**,
+            src/main/java/dto/**
         </sonar.coverage.exclusions>
     </properties>
 

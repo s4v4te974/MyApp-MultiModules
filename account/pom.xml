@@ -15,10 +15,10 @@
     <properties>
         <sonar.projectKey>account</sonar.projectKey>
         <sonar.coverage.exclusions>
-            src/main/java/repository/**,
-            src/main/java/controller/**,
+            src/main/java//repository/**,
             src/main/java/entity/**,
-            src/main/java/utils/**
+            src/main/java/utils/**,
+            src/main/jva/exception/**,
         </sonar.coverage.exclusions>
     </properties>
 
