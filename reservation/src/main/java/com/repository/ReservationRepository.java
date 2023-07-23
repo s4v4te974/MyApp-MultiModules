@@ -1,0 +1,15 @@
+package com.repository;
+
+import com.entity.Reservation;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+
+    @Query("SELECT u FROM reservation WHERE u.reference = :reference AND u.login = :login")
+    Reservation retrieveReservationByReference(@Param("reference") String ref, @Param("login") String login);
+
+}
