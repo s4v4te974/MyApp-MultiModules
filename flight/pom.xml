@@ -18,11 +18,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>flight</sonar.projectKey>
         <sonar.coverage.exclusions>
-            src/main/java/repository/**,
-            src/main/java/entity/**,
-            src/main/java/utils/**,
-            src/main/java/exception/**,
-            src/main/java/dto/**
+            src/main/java/com/repository/**,
+            src/main/java/com/entity/**,
+            src/main/java/com/utils/**,
+            src/main/java/com/exception/**,
+            src/main/java/com/dto/**
         </sonar.coverage.exclusions>
     </properties>
 
