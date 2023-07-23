@@ -61,12 +61,6 @@ class FlightBusinessLogicTest {
     @Test
     void availableFlights() throws FlightException {
 
-        ProposedFlight flight = ProposedFlight.builder() //
-                .plane(plane) //
-                .price(20.0) //
-                .passengerClass(PassengerClass.ECONOMIC) //
-                .build(); //
-
         when(flightService.calculateDistance(criteria.getIdDeparture(), criteria.getIdArrival())).thenReturn(2000.0);
         when(flightService.retrieveplanes()).thenReturn(planes);
         when(flightService.calculatePrice(criteria)).thenReturn(50.0);
