@@ -12,12 +12,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-class MapToReservationTest {
+class ReservationMapperTest {
 
     @Test
     void mapToReservation() {
 
-        MapToReservation mapper = Mappers.getMapper(MapToReservation.class);
+        ReservationMapper mapper = Mappers.getMapper(ReservationMapper.class);
         ReservationDto dto = ReservationDto.builder() //
                 .passengerClass("ECONOMIC") //
                 .price("22.0") //

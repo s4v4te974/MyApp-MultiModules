@@ -4,7 +4,7 @@ import com.dto.ReservationDto;
 import com.entity.Account;
 import com.entity.Plane;
 import com.entity.Reservation;
-import com.mapper.MapToReservation;
+import com.mapper.ReservationMapper;
 import com.repository.AccountRepository;
 import com.repository.PlaneRepository;
 import com.repository.ReservationRepository;
@@ -25,12 +25,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final AccountRepository accountRepository;
 
-    private final MapToReservation mapToReservation;
+    private final ReservationMapper reservationMapper;
 
     @Override
     public Reservation createReservation(ReservationDto dto) {
         boolean isReferenceOk = false;
-        String reference = null;
+        String reference;
         Reservation reservation = null;
 
         List<String> references = reservationRepository.findAll()
@@ -46,7 +46,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         if(plane != null || account != null){
-            reservation = mapToReservation.mapToReservation(plane, account, dto);
+            reservation = reservationMapper.mapToReservation(plane, account, dto);
         }
 
         if(reservation != null){

@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper()
-public interface MapToReservation {
+public interface ReservationMapper {
 
     @Mapping(target = "reference", ignore = true)
     @Mapping(target = "id", ignore = true)

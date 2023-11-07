@@ -1,7 +1,7 @@
 package com.account;
 
 import com.businesslogic.AccountBusinessLogic;
-import com.entity.Account;
+import com.dto.AccountRecord;
 import com.exception.AccountException;
 import com.utils.AccountConst;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +30,8 @@ public class AccountController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    ResponseEntity<Account> retrieveAccount(@RequestBody Account account) throws AccountException {
-        Account retrievedAccount = accountBusinessLogic.retrieveAccount(account.getLogin(), account.getPassword());
+    ResponseEntity<AccountRecord> retrieveAccount(@RequestBody AccountRecord account) throws AccountException {
+        AccountRecord retrievedAccount = accountBusinessLogic.retrieveAccount(account.login(), account.password());
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 
@@ -39,8 +39,8 @@ public class AccountController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    ResponseEntity<Account> createAccount(@RequestBody Account account) throws AccountException {
-        Account retrievedAccount = accountBusinessLogic.persistAccount(account);
+    ResponseEntity<AccountRecord> createAccount(@RequestBody AccountRecord account) throws AccountException {
+        AccountRecord retrievedAccount = accountBusinessLogic.persistAccount(account);
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 
@@ -48,8 +48,8 @@ public class AccountController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    ResponseEntity<Account> updateAccount(@RequestBody Account account) throws AccountException {
-        Account retrievedAccount = accountBusinessLogic.persistAccount(account);
+    ResponseEntity<AccountRecord> updateAccount(@RequestBody AccountRecord account) throws AccountException {
+        AccountRecord retrievedAccount = accountBusinessLogic.persistAccount(account);
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 

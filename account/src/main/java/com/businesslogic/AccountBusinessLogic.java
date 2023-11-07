@@ -1,12 +1,17 @@
 package com.businesslogic;
 
+import com.dto.AccountRecord;
 import com.entity.Account;
 import com.exception.AccountException;
+import com.mapper.AccountMapper;
 import com.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.utils.AccountConst.DELETE_ERROR;
 import static com.utils.AccountConst.PERSIST_ERROR;
@@ -19,35 +24,47 @@ public class AccountBusinessLogic {
 
     private final AccountRepository accountRepository;
 
-    public Account retrieveAccount(String login, String password) throws AccountException {
+    private final AccountMapper mapper;
+
+    public AccountRecord retrieveAccount(String login, String password) throws AccountException {
+        AccountRecord account = null;
         try {
-            return accountRepository.retrieveAccount(login, password);
+            Account existingAccount = accountRepository.findByLoginAndPassword(login, password).orElse(null);
+            if(existingAccount != null){
+                account = mapper.mapToRecord(existingAccount);
+            }
         } catch (DataAccessException dae) {
             throw new AccountException(RETRIEVE_ERROR);
         }
+        return account;
     }
 
-    public Account persistAccount(Account account) throws AccountException {
-        try {
-            accountRepository.save(account);
-            return account;
-        } catch (DataAccessException dae) {
-            throw new AccountException(PERSIST_ERROR);
+    public AccountRecord persistAccount(AccountRecord accountRecord) throws AccountException {
+        Optional<Account> existingAccount = accountRepository.findByNameAndLastNameAndEmail(
+                accountRecord.name(), accountRecord.lastName(), accountRecord.email());
+
+        if(existingAccount.isEmpty()){
+            try {
+                accountRepository.save(mapper.mapToEntity(accountRecord));
+            } catch (DataAccessException dae) {
+                throw new AccountException(PERSIST_ERROR);
+            }
         }
+        return accountRecord;
     }
 
-    public Account updateAccount(Account accountToUpdate) throws AccountException {
+    public AccountRecord updateAccount(AccountRecord accountToUpdate) throws AccountException {
         try {
-            Account account = accountRepository.findById(accountToUpdate.getId()).orElse(null);
-            if (account != null) {
-                account.setName(accountToUpdate.getName());
-                account.setLastName(accountToUpdate.getLastName());
-                account.setEmail(accountToUpdate.getEmail());
-                account.setLogin(accountToUpdate.getLogin());
-                account.setPassword(accountToUpdate.getPassword());
-                account.setPasseport(accountToUpdate.getPasseport());
-                accountRepository.save(account);
-                return account;
+            Account retrievedAccount = accountRepository.findById(accountToUpdate.id()).orElse(null);
+
+            List<Account> existingAccounts = accountRepository.findAllByNameAndLastNameAndEmail(
+                    accountToUpdate.name(), accountToUpdate.lastName(), accountToUpdate.email());
+
+            if (retrievedAccount != null && existingAccounts.size() < 2){
+                if(retrievedAccount.getId() == existingAccounts.get(0).getId()){
+                    accountRepository.save(mapper.mapToEntity(accountToUpdate));
+                }
+                return accountToUpdate;
             } else {
                 throw new AccountException(PERSIST_ERROR);
             }

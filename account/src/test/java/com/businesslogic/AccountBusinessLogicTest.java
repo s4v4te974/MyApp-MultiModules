@@ -1,20 +1,25 @@
 package com.businesslogic;
 
 
-import com.entity.Account;
+import com.dto.AccountRecord;
 import com.exception.AccountException;
+import com.mapper.AccountMapper;
 import com.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
 
+import java.util.Optional;
+
 import static com.utils.AccountConst.DELETE_ERROR;
 import static com.utils.AccountConst.PERSIST_ERROR;
 import static com.utils.AccountConst.RETRIEVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,18 +39,22 @@ class AccountBusinessLogicTest {
     @Mock
     AccountRepository repository;
 
+    AccountMapper mapper = Mappers.getMapper(AccountMapper.class);
+
     @Test
     void retrieveAccount() throws AccountException {
-        Account account = buildAccount();
-        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(account);
-        Account result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
+        AccountRecord account = buildRecord();
+        Optional<AccountRecord> toBeReturn = Optional.of(buildRecord());
+        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(toBeReturn);
+        AccountRecord result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
+        assertEquals(account.id(), result.id());
         assertThat(account).isEqualTo(result);
     }
 
     @Test
     void retrieveAccountException() {
         doThrow(new DataAccessException("Error") {
-        }).when(repository).retrieveAccount(LOGIN, PASSWORD);
+        }).when(repository).findByLoginAndPassword(LOGIN, PASSWORD);
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.retrieveAccount(LOGIN, PASSWORD));
         assertNotNull(exception.getMessage());
@@ -54,17 +63,17 @@ class AccountBusinessLogicTest {
 
     @Test
     void persistAccount() throws AccountException {
-        Account account = buildAccount();
+        AccountRecord account = buildRecord();
         when(businessLogic.persistAccount(account)).thenReturn(account);
-        Account result = businessLogic.persistAccount(account);
+        AccountRecord result = businessLogic.persistAccount(account);
         assertThat(account).isEqualTo(result);
     }
 
     @Test
     void persistAccountException() {
-        Account account = buildAccount();
-        doThrow(new DataAccessException("Error") {
-        }).when(repository).save(account);
+        AccountRecord account = buildRecord();
+        doThrow(new DataAccessException("Error") {})
+                .when(repository).save(mapper.mapToEntity(account));
         Exception exception = assertThrows(AccountException.class,
                 () -> businessLogic.persistAccount(account));
         assertNotNull(exception.getMessage());
@@ -87,15 +96,13 @@ class AccountBusinessLogicTest {
         assertTrue(exception.getMessage().contains(DELETE_ERROR));
     }
 
-    private Account buildAccount() {
-        return Account.builder()
-                .id(0) //
-                .name("name") //
-                .lastName("lastname") //
-                .login(LOGIN) //
-                .password(PASSWORD) //
-                .email("email") //
-                .passeport("passeport") //
-                .build();
+    private AccountRecord buildRecord(){
+        return new AccountRecord(0, //
+                "name", //
+                "lastname", //
+                LOGIN, //
+                PASSWORD, //
+                "email", //
+                "passeport");
     }
 }
