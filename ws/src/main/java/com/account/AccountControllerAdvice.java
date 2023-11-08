@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.utils.AccountConst.DELETE_ERROR;
+import static com.utils.AccountConst.DUPLICATION_EXCEPTION;
 import static com.utils.AccountConst.PERSIST_ERROR;
 import static com.utils.AccountConst.RETRIEVE_ERROR;
 
@@ -23,6 +24,9 @@ public class AccountControllerAdvice {
         }
         if(ex.getClass().getName().contains(RETRIEVE_ERROR)){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        if(ex.getClass().getName().contains(DUPLICATION_EXCEPTION)){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         }
         return null;
     }

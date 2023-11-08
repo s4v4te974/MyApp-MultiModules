@@ -2,6 +2,7 @@ package com.businesslogic;
 
 
 import com.dto.AccountRecord;
+import com.entity.Account;
 import com.exception.AccountException;
 import com.mapper.AccountMapper;
 import com.repository.AccountRepository;
@@ -13,9 +14,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.utils.AccountConst.DELETE_ERROR;
+import static com.utils.AccountConst.DUPLICATION_EXCEPTION;
 import static com.utils.AccountConst.PERSIST_ERROR;
 import static com.utils.AccountConst.RETRIEVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
@@ -39,16 +46,27 @@ class AccountBusinessLogicTest {
     @Mock
     AccountRepository repository;
 
+    @Mock
     AccountMapper mapper = Mappers.getMapper(AccountMapper.class);
 
     @Test
     void retrieveAccount() throws AccountException {
-        AccountRecord account = buildRecord();
-        Optional<AccountRecord> toBeReturn = Optional.of(buildRecord());
-        when(businessLogic.retrieveAccount(LOGIN, PASSWORD)).thenReturn(toBeReturn);
-        AccountRecord result = businessLogic.retrieveAccount(LOGIN, PASSWORD);
-        assertEquals(account.id(), result.id());
-        assertThat(account).isEqualTo(result);
+        Account retrievedAccount = buildAccount();
+        AccountRecord record = buildRecord();
+
+        when(repository.findByLoginAndPassword(any(String.class), any(String.class)))
+                .thenReturn(Optional.of(retrievedAccount));
+        when(mapper.mapToRecord(retrievedAccount)).thenReturn(record);
+
+        AccountRecord retrievedAccountRecord = businessLogic.retrieveAccount(LOGIN, PASSWORD);
+
+        assertEquals(retrievedAccount.getId(), retrievedAccountRecord.id());
+        assertEquals(retrievedAccount.getName(), retrievedAccountRecord.name());
+        assertEquals(retrievedAccount.getLastName(), retrievedAccountRecord.lastName());
+        assertEquals(retrievedAccount.getLogin(), retrievedAccountRecord.login());
+        assertEquals(retrievedAccount.getPassword(), retrievedAccountRecord.password());
+        assertEquals(retrievedAccount.getEmail(), retrievedAccountRecord.email());
+        assertEquals(retrievedAccount.getPasseport(), retrievedAccountRecord.passeport());
     }
 
     @Test
@@ -63,19 +81,37 @@ class AccountBusinessLogicTest {
 
     @Test
     void persistAccount() throws AccountException {
-        AccountRecord account = buildRecord();
-        when(businessLogic.persistAccount(account)).thenReturn(account);
-        AccountRecord result = businessLogic.persistAccount(account);
-        assertThat(account).isEqualTo(result);
+
+        AccountRecord accountRecord = buildRecord();
+        Account account = buildAccount();
+
+        when(mapper.mapToEntity(accountRecord)).thenReturn(account);
+
+        AccountRecord result = businessLogic.persistAccount(accountRecord);
+
+        assertEquals(account.getId(), result.id());
+        assertEquals(account.getName(), result.name());
+        assertEquals(account.getLastName(), result.lastName());
+        assertEquals(account.getLogin(), result.login());
+        assertEquals(account.getPassword(), result.password());
+        assertEquals(account.getEmail(), result.email());
+        assertEquals(account.getPasseport(), result.passeport());
     }
 
     @Test
     void persistAccountException() {
-        AccountRecord account = buildRecord();
+
+        AccountRecord record = buildRecord();
+
+        when(repository.findByNameAndLastNameAndEmail(any(), any(), any()))
+                .thenReturn(Optional.empty());
+
         doThrow(new DataAccessException("Error") {})
-                .when(repository).save(mapper.mapToEntity(account));
+                .when(repository).save(any());
+
         Exception exception = assertThrows(AccountException.class,
-                () -> businessLogic.persistAccount(account));
+                () -> businessLogic.persistAccount(record));
+
         assertNotNull(exception.getMessage());
         assertTrue(exception.getMessage().contains(PERSIST_ERROR));
     }
@@ -96,6 +132,81 @@ class AccountBusinessLogicTest {
         assertTrue(exception.getMessage().contains(DELETE_ERROR));
     }
 
+    @Test
+    void updateAccount() throws AccountException {
+
+        Account account = buildAccount();
+        AccountRecord record = buildRecord();
+        List<Account> accounts = new ArrayList<>(Collections.singletonList(account));
+
+        when(repository.findById(record.id())).thenReturn(Optional.of(account));
+        when(repository.findAllByNameAndLastNameAndEmail(any(String.class), any(String.class), any(String.class)))
+                .thenReturn(accounts);
+        when(mapper.mapToEntity(record)).thenReturn(account);
+
+        AccountRecord expected = businessLogic.updateAccount(record);
+
+        assertThat(record).isEqualTo(expected);
+    }
+
+    @Test
+    void updateAccountExceptionDuplication() throws AccountException {
+
+        Account account = buildAccount();
+        Account account2 = buildAccount();
+        account2.setId(100);
+
+        AccountRecord record = buildRecord();
+        List<Account> accounts = new ArrayList<>(Collections.singletonList(account2));
+
+        when(repository.findById(record.id())).thenReturn(Optional.of(account));
+        when(repository.findAllByNameAndLastNameAndEmail(any(String.class), any(String.class), any(String.class)))
+                .thenReturn(accounts);
+
+        Exception exception = assertThrows(AccountException.class,
+                () -> businessLogic.updateAccount(record));
+
+        assertNotNull(exception.getMessage());
+        assertTrue(exception.getMessage().contains(DUPLICATION_EXCEPTION));
+    }
+
+    @Test
+    void updateAccountExceptionNotUnique() throws AccountException {
+
+        Account account = buildAccount();
+        Account account2 = buildAccount();
+        account2.setId(100);
+
+        AccountRecord record = buildRecord();
+        List<Account> accounts = new ArrayList<>(Arrays.asList(account, account2));
+
+        when(repository.findById(record.id())).thenReturn(Optional.of(account));
+        when(repository.findAllByNameAndLastNameAndEmail(any(String.class), any(String.class), any(String.class)))
+                .thenReturn(accounts);
+
+        Exception exception = assertThrows(AccountException.class,
+                () -> businessLogic.updateAccount(record));
+
+        assertNotNull(exception.getMessage());
+        assertTrue(exception.getMessage().contains(DUPLICATION_EXCEPTION));
+    }
+
+    @Test
+    void updateAccountDataAccessException() throws AccountException {
+
+        Account account = buildAccount();
+        AccountRecord record = buildRecord();
+
+        doThrow(new DataAccessException("Error") {})
+                .when(repository).findById(any());
+
+        Exception exception = assertThrows(AccountException.class,
+                () -> businessLogic.updateAccount(record));
+
+        assertNotNull(exception.getMessage());
+        assertTrue(exception.getMessage().contains(PERSIST_ERROR));
+    }
+
     private AccountRecord buildRecord(){
         return new AccountRecord(0, //
                 "name", //
@@ -104,5 +215,17 @@ class AccountBusinessLogicTest {
                 PASSWORD, //
                 "email", //
                 "passeport");
+    }
+
+    private Account buildAccount(){
+        return Account.builder() //
+                .id(0) //
+                .name("name") //
+                .lastName("lastname") //
+                .login(LOGIN) //
+                .email("email") //
+                .password(PASSWORD) //
+                .passeport("passeport") //
+                .build(); //
     }
 }

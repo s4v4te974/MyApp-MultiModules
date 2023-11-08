@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.utils.AccountConst.DELETE_ERROR;
+import static com.utils.AccountConst.DUPLICATION_EXCEPTION;
 import static com.utils.AccountConst.PERSIST_ERROR;
 import static com.utils.AccountConst.RETRIEVE_ERROR;
 
@@ -63,10 +64,12 @@ public class AccountBusinessLogic {
             if (retrievedAccount != null && existingAccounts.size() < 2){
                 if(retrievedAccount.getId() == existingAccounts.get(0).getId()){
                     accountRepository.save(mapper.mapToEntity(accountToUpdate));
+                }else{
+                    throw new AccountException(DUPLICATION_EXCEPTION);
                 }
                 return accountToUpdate;
             } else {
-                throw new AccountException(PERSIST_ERROR);
+                throw new AccountException(DUPLICATION_EXCEPTION);
             }
         } catch (DataAccessException dae) {
             throw new AccountException(PERSIST_ERROR);
