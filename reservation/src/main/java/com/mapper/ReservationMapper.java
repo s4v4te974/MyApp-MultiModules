@@ -1,6 +1,7 @@
 package com.mapper;
 
-import com.dto.ReservationDto;
+import com.dto.ReservationInformationRecord;
+import com.dto.ReservationRecord;
 import com.entity.Account;
 import com.entity.Plane;
 import com.entity.Reservation;
@@ -19,6 +20,10 @@ public interface ReservationMapper {
     @Mapping(target = "lastName", source = "account.lastName")
     @Mapping(target = "passeport", source = "account.passeport")
     @Mapping(target = "login", source = "account.login")
-    Reservation mapToReservation(Plane plane, Account account, ReservationDto dto);
+    ReservationRecord mapToRecordFromMultipleSource(Plane plane, Account account, ReservationInformationRecord dto);
+    
+    Reservation mapToEntity(ReservationRecord reservationRecord);
+
+    ReservationRecord mapToRecord(Reservation reservation);
 
 }

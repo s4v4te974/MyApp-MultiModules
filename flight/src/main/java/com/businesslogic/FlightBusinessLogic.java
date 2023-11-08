@@ -25,10 +25,12 @@ public class FlightBusinessLogic {
     private final FlightService flightService;
 
     public List<Cities> availableCities() {
+        log.info("retrieving available cities");
         return flightService.availableCities();
     }
 
     public List<ProposedFlight> availableFlights(SearchCriteria criteria) throws FlightException {
+        log.info("Searching for available flights");
         double distance = flightService.calculateDistance(criteria.getIdDeparture(), criteria.getIdArrival());
         List<Plane> planes = flightService.retrieveplanes();
         Plane plane = planes.stream().filter(p -> p.getRange() > distance
@@ -36,19 +38,22 @@ public class FlightBusinessLogic {
         if (plane == null) {
             return Collections.emptyList();
         }
+        log.info("Starting calculate price");
         double price = calculatePrice(criteria);
         double finalPrice = calculateFinalPrice(plane.getConso(), distance, price);
+
 
         ProposedFlight proposedFlight = ProposedFlight.builder() //
                 .price(finalPrice) //
                 .passengerClass(criteria.getPassengerClass()) //
                 .plane(plane) //
                 .build();
-
+        log.info("return the list of available flight");
         return new ArrayList<>(Collections.singletonList(proposedFlight));
     }
 
     private double calculatePrice(SearchCriteria criteria) throws FlightException {
+        log.info("Calculating price");
         double priceByClass;
         try {
             priceByClass = flightService.calculatePrice(criteria);
@@ -60,6 +65,7 @@ public class FlightBusinessLogic {
     }
 
     private double priceByDay(LocalDateTime date, double tax) {
+        log.info("determine price by day");
         DayOfWeek day = date.getDayOfWeek();
         double price;
         switch (day) {
@@ -73,6 +79,7 @@ public class FlightBusinessLogic {
     }
 
     private double priceByMonth(LocalDateTime date, double tax) {
+        log.info("determine price by month");
         Month month = date.getMonth();
         double price;
         switch (month) {

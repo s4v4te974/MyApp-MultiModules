@@ -72,7 +72,7 @@ class FlightServiceTest {
         Plane plane1 = Plane.builder()
                 .id(1) //
                 .speed(950d) //
-                .builder("AIRBUS") //
+                .manufacturer("AIRBUS") //
                 .model("A330-200") //
                 .range(11750.00) //
                 .conso(2.4) //
@@ -81,7 +81,7 @@ class FlightServiceTest {
         Plane plane2 = Plane.builder()
                 .id(1) //
                 .speed(950d) //
-                .builder("AIRBUS") //
+                .manufacturer("AIRBUS") //
                 .model("A330-200") //
                 .range(11750.00) //
                 .conso(2.4) //

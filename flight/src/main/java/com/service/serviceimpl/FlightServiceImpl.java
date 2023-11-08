@@ -52,6 +52,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public double calculateDistance(int idDeparture, int idArrival) throws FlightException {
+        log.info("Start calculate distance");
         Optional<Cities> departure = citiesRepository.findById(idDeparture);
         Optional<Cities> arrival = citiesRepository.findById(idArrival);
 
@@ -70,7 +71,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public double calculatePrice(SearchCriteria criteria) throws FlightException {
-
+        log.info("Start calculate price");
         Optional<Cities> departure = citiesRepository.findById(criteria.getIdDeparture());
         Optional<Cities> arrival = citiesRepository.findById(criteria.getIdArrival());
 
@@ -84,6 +85,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Plane> retrieveplanes() throws FlightException {
+        log.info("Retrieve all the planes");
         try {
             return planeRepository.findAll();
         } catch (DataAccessException e) {
@@ -92,7 +94,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     private double taxByClass(String passengerClass, Cities departure, Cities arrival) {
-
+        log.info("Determine tax by passengers class");
         if (departure.isUe() && arrival.isUe()) {
             return switch (passengerClass) {
                 case "FIRSTCLASS" -> PRESTATION_FIRST_UE + SOLIDARITY_TAX_UE_MAX + REDEVANCE_PASSENGER_MAX

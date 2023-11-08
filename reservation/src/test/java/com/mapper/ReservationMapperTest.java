@@ -1,6 +1,7 @@
 package com.mapper;
 
-import com.dto.ReservationDto;
+import com.dto.ReservationInformationRecord;
+import com.dto.ReservationRecord;
 import com.entity.Account;
 import com.entity.Plane;
 import com.entity.Reservation;
@@ -14,14 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class ReservationMapperTest {
 
-    @Test
-    void mapToReservation() {
+    ReservationMapper mapper = Mappers.getMapper(ReservationMapper.class);
 
-        ReservationMapper mapper = Mappers.getMapper(ReservationMapper.class);
-        ReservationDto dto = ReservationDto.builder() //
-                .passengerClass("ECONOMIC") //
-                .price("22.0") //
-                .build(); //
+    @Test
+    void mapToRecordFromMultipleSourceTest() {
+
+        ReservationInformationRecord dto = new ReservationInformationRecord( "ref",
+                1, 2 , "22.0", "ECONOMIC");
 
         Plane plane = Plane.builder() //
                 .model("A330-200") //
@@ -34,17 +34,74 @@ class ReservationMapperTest {
                 .login("login") //
                 .build(); //
 
-        Reservation reservation = mapper.mapToReservation(plane, account, dto);
+        ReservationRecord reservation = mapper.mapToRecordFromMultipleSource(plane, account, dto);
 
-        assertEquals(plane.getModel(), reservation.getPlaneRef());
-        assertEquals(dto.getPassengerClass(), reservation.getPassengerClass());
-        assertEquals(dto.getPrice(), reservation.getPrice());
-        assertEquals(account.getName(), reservation.getName());
-        assertEquals(account.getLastName(), reservation.getLastName());
-        assertEquals(account.getPasseport(), reservation.getPasseport());
-        assertEquals(account.getLogin(), reservation.getLogin());
+        assertEquals(plane.getModel(), reservation.planeRef());
+        assertEquals(dto.passengerClass(), reservation.passengerClass());
+        assertEquals(dto.price(), reservation.price());
+        assertEquals(account.getName(), reservation.name());
+        assertEquals(account.getLastName(), reservation.lastName());
+        assertEquals(account.getPasseport(), reservation.passeport());
+        assertEquals(account.getLogin(), reservation.login());
 
     }
 
+    @Test
+    void mapToEntityTest(){
+        ReservationRecord reservationRecord = buildReservationRecord();
+        Reservation reservation = mapper.mapToEntity(reservationRecord);
 
+        assertEquals(reservationRecord.id(), reservation.getId());
+        assertEquals(reservationRecord.reference(), reservation.getReference());
+        assertEquals(reservationRecord.planeRef(), reservation.getPlaneRef());
+        assertEquals(reservationRecord.name(), reservation.getName());
+        assertEquals(reservationRecord.lastName(), reservation.getLastName());
+        assertEquals(reservationRecord.passeport(), reservation.getPasseport());
+        assertEquals(reservationRecord.login(), reservation.getLogin());
+        assertEquals(reservationRecord.price(), reservation.getPrice());
+        assertEquals(reservationRecord.passengerClass(), reservation.getPassengerClass());
+    }
+
+    @Test
+    void mapToRecord(){
+        Reservation reservation = buildReservation();
+        ReservationRecord reservationRecord = mapper.mapToRecord(reservation);
+
+        assertEquals(reservationRecord.id(), reservation.getId());
+        assertEquals(reservationRecord.reference(), reservation.getReference());
+        assertEquals(reservationRecord.planeRef(), reservation.getPlaneRef());
+        assertEquals(reservationRecord.name(), reservation.getName());
+        assertEquals(reservationRecord.lastName(), reservation.getLastName());
+        assertEquals(reservationRecord.passeport(), reservation.getPasseport());
+        assertEquals(reservationRecord.login(), reservation.getLogin());
+        assertEquals(reservationRecord.price(), reservation.getPrice());
+        assertEquals(reservationRecord.passengerClass(), reservation.getPassengerClass());
+    }
+
+    Reservation buildReservation(){
+        return Reservation.builder() //
+                .id(1) //
+                .reference("MW8KT") //
+                .planeRef("A330-200") //
+                .name("name") //
+                .lastName("lastName") //
+                .price("22.00") //
+                .passeport("passeport") //
+                .login("login") //
+                .passengerClass("ECONOMIC")
+                .build(); //
+    }
+
+    ReservationRecord buildReservationRecord(){
+        return new ReservationRecord(
+                1, //
+                "MW8KT", //
+                "name", //
+                "lastName", //
+                "passeport", //
+                "A330-200", //
+                "22.00", //
+                "login", //
+                "ECONOMIC");
+    }
 }

@@ -28,6 +28,7 @@ public class AccountBusinessLogic {
     private final AccountMapper mapper;
 
     public AccountRecord retrieveAccount(String login, String password) throws AccountException {
+        log.info("Start retrieving account");
         AccountRecord account = null;
         try {
             Account existingAccount = accountRepository.findByLoginAndPassword(login, password).orElse(null);
@@ -37,10 +38,12 @@ public class AccountBusinessLogic {
         } catch (DataAccessException dae) {
             throw new AccountException(RETRIEVE_ERROR);
         }
+        log.info("account retrieved");
         return account;
     }
 
     public AccountRecord persistAccount(AccountRecord accountRecord) throws AccountException {
+        log.info("saving account");
         Optional<Account> existingAccount = accountRepository.findByNameAndLastNameAndEmail(
                 accountRecord.name(), accountRecord.lastName(), accountRecord.email());
 
@@ -51,10 +54,12 @@ public class AccountBusinessLogic {
                 throw new AccountException(PERSIST_ERROR);
             }
         }
+        log.info("account is saved");
         return accountRecord;
     }
 
     public AccountRecord updateAccount(AccountRecord accountToUpdate) throws AccountException {
+        log.info("Start updating account");
         try {
             Account retrievedAccount = accountRepository.findById(accountToUpdate.id()).orElse(null);
 
@@ -67,6 +72,7 @@ public class AccountBusinessLogic {
                 }else{
                     throw new AccountException(DUPLICATION_EXCEPTION);
                 }
+                log.info("account updated with success");
                 return accountToUpdate;
             } else {
                 throw new AccountException(DUPLICATION_EXCEPTION);
@@ -79,6 +85,7 @@ public class AccountBusinessLogic {
     public void deleteAccount(Integer id) throws AccountException {
         try {
             accountRepository.deleteById(id);
+            log.info("account delete with success");
         } catch (DataAccessException dae) {
             throw new AccountException(DELETE_ERROR);
         }

@@ -1,10 +1,10 @@
 package com.service;
 
-import com.dto.ReservationDto;
-import com.entity.Reservation;
+import com.dto.ReservationInformationRecord;
+import com.dto.ReservationRecord;
 
 public interface ReservationService {
 
-    public Reservation createReservation(ReservationDto dto);
+    ReservationRecord createReservation(ReservationInformationRecord reservationInformationRecord);
 
 }

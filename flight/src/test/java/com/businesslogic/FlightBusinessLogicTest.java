@@ -49,7 +49,7 @@ class FlightBusinessLogicTest {
         plane = Plane.builder()
                 .id(1) //
                 .speed(950d) //
-                .builder("AIRBUS") //
+                .manufacturer("AIRBUS") //
                 .model("A330-200") //
                 .range(11750.00) //
                 .conso(2.4) //

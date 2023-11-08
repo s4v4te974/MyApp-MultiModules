@@ -51,4 +51,6 @@ public class FlightConsts {
 
     public static final String DEPARTURE_NIGHT_FLY = "21:00";
 
+
+
 }

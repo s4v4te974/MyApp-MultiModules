@@ -11,11 +11,4 @@ public class AccountConst {
 
     public static final String DUPLICATION_EXCEPTION = "Error: user already exist";
 
-    public static final String DEFAULT_PATH = "/";
-    public static final String RETRIEVE_USER = "retrieve-user/";
-    public static final String UPDATE_USER = "update-user/";
-    public static final String CREATE_USER = "create-user/";
-    public static final String DELETE_USER = "delete-user/";
-
-
 }

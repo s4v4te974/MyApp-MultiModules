@@ -25,8 +25,8 @@ public class Plane {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "builder")
-    private String builder;
+    @Column(name = "manufacturer")
+    private String manufacturer;
 
     @Column(name = "model")
     private String model;

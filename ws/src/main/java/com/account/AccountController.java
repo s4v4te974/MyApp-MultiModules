@@ -3,7 +3,6 @@ package com.account;
 import com.businesslogic.AccountBusinessLogic;
 import com.dto.AccountRecord;
 import com.exception.AccountException;
-import com.utils.AccountConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,15 +17,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.utils.WebServiceConsts.CREATE_USER;
+import static com.utils.WebServiceConsts.DEFAULT_PATH;
+import static com.utils.WebServiceConsts.DELETE_USER;
+import static com.utils.WebServiceConsts.RETRIEVE_USER;
+import static com.utils.WebServiceConsts.UPDATE_USER;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = AccountConst.DEFAULT_PATH)
+@RequestMapping(value = DEFAULT_PATH)
 public class AccountController {
 
     private AccountBusinessLogic accountBusinessLogic;
 
-    @GetMapping(value = AccountConst.RETRIEVE_USER,
+    @GetMapping(value = RETRIEVE_USER,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -35,7 +40,7 @@ public class AccountController {
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 
-    @PostMapping(value = AccountConst.CREATE_USER,
+    @PostMapping(value = CREATE_USER,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -44,7 +49,7 @@ public class AccountController {
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 
-    @PutMapping(value = AccountConst.UPDATE_USER,
+    @PutMapping(value = UPDATE_USER,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -53,10 +58,7 @@ public class AccountController {
         return new ResponseEntity<>(retrievedAccount, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = AccountConst.DELETE_USER + "{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @DeleteMapping(value = DELETE_USER + "{id}")
     public ResponseEntity<String> deleteAccount(@PathVariable("id") Integer id) throws AccountException {
         accountBusinessLogic.deleteAccount(id);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -42,8 +42,10 @@ class AccountBusinessLogicTest {
 
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+
     @InjectMocks
     AccountBusinessLogic businessLogic;
+
     @Mock
     AccountRepository repository;
 
