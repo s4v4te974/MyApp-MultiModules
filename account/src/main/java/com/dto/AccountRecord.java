@@ -7,4 +7,5 @@ public record AccountRecord(
         , String login //
         , String password //
         , String email //
-        , String passeport) {}
+        , String passeport //
+        , String role ) {}

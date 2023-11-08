@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -137,6 +138,20 @@ class FlightBusinessLogicTest {
         setDate(criteria, Month.SEPTEMBER, 5);
         ProposedFlight expectedSeptemberDefault = flightBusinessLogic.availableFlights(criteria).get(0);
         assertEquals(106.64, expectedSeptemberDefault.getPrice());
+    }
+
+    @Test
+    void AvailableFlightsEmpty() throws FlightException {
+
+        SearchCriteria criteria = SearchCriteria.builder() //
+                .idDeparture(1) //
+                .idArrival(2) //
+                .build();
+
+        when(flightService.calculateDistance(criteria.getIdDeparture(), criteria.getIdArrival())).thenReturn(2d);
+        when(flightService.retrieveplanes()).thenReturn(Collections.emptyList());
+        List<ProposedFlight> flights = flightBusinessLogic.availableFlights(criteria);
+        assertTrue(flights.isEmpty());
     }
 
     private void setDate(SearchCriteria criteria, Month month, int day) {

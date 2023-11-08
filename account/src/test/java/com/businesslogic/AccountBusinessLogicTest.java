@@ -3,6 +3,7 @@ package com.businesslogic;
 
 import com.dto.AccountRecord;
 import com.entity.Account;
+import com.enums.Role;
 import com.exception.AccountException;
 import com.mapper.AccountMapper;
 import com.repository.AccountRepository;
@@ -214,7 +215,8 @@ class AccountBusinessLogicTest {
                 LOGIN, //
                 PASSWORD, //
                 "email", //
-                "passeport");
+                "passeport" //
+                , Role.ADMIN.name() );
     }
 
     private Account buildAccount(){
@@ -226,6 +228,7 @@ class AccountBusinessLogicTest {
                 .email("email") //
                 .password(PASSWORD) //
                 .passeport("passeport") //
+                .role(Role.ADMIN.name())
                 .build(); //
     }
 }

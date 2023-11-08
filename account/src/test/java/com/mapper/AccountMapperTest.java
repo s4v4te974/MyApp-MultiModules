@@ -2,6 +2,7 @@ package com.mapper;
 
 import com.dto.AccountRecord;
 import com.entity.Account;
+import com.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +23,8 @@ class AccountMapperTest {
                 "Jstal", //
                 "Kremlin88", //
                 "Joseph.staline@kremlin.ru",//
-                "123RU456");
+                "123RU456",
+                Role.ADMIN.name());
 
         Account expected = mapper.mapToEntity(accountToMap);
         assertEquals(accountToMap.id(), expected.getId());
@@ -43,7 +45,9 @@ class AccountMapperTest {
                 .login("Jstal") //
                 .password("Kremlin88") //
                 .email("Joseph.staline@kremlin.ru")//
-                .passeport("123RU456").build();
+                .passeport("123RU456") //
+                .role(Role.ADMIN.name()) //
+                .build();
 
         AccountRecord expected = mapper.mapToRecord(accountToMap);
         assertEquals(expected.id(), accountToMap.getId());

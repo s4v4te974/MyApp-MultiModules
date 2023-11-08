@@ -49,7 +49,7 @@ public class FlightBusinessLogic {
     }
 
     private double calculatePrice(SearchCriteria criteria) throws FlightException {
-        double priceByClass = 0;
+        double priceByClass;
         try {
             priceByClass = flightService.calculatePrice(criteria);
         } catch (FlightException e) {

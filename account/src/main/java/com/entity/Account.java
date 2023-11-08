@@ -51,4 +51,7 @@ public class Account {
     @Column(name = "passeport")
     private String passeport;
 
+    @Column(name = "role")
+    private String role;
+
 }
