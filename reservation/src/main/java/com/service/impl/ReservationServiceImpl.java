@@ -58,6 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
+    @SuppressWarnings("squid:SCS")
     public String generateReferences(){
         return RandomStringUtils.randomAlphabetic(6);
     }
