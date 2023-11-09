@@ -1,8 +1,9 @@
 package com.mapper;
 
-import com.dto.AccountRecord;
-import com.entity.Account;
-import com.enums.Role;
+import com.account.dto.AccountRecord;
+import com.account.entity.Account;
+import com.account.enums.Role;
+import com.account.mapper.AccountMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;

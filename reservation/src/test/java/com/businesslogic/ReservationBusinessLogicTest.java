@@ -1,14 +1,15 @@
 package com.businesslogic;
 
-import com.dto.ReservationInformationRecord;
-import com.dto.ReservationLoginRecord;
-import com.dto.ReservationRecord;
-import com.entity.Account;
-import com.entity.Reservation;
-import com.exception.ReservationException;
-import com.mapper.ReservationMapper;
-import com.repository.ReservationRepository;
-import com.service.ReservationService;
+import com.reservation.businesslogic.ReservationBusinessLogic;
+import com.reservation.dto.ReservationInformationRecord;
+import com.reservation.dto.ReservationLoginRecord;
+import com.reservation.dto.ReservationRecord;
+import com.account.entity.Account;
+import com.reservation.entity.Reservation;
+import com.reservation.exception.ReservationException;
+import com.reservation.mapper.ReservationMapper;
+import com.reservation.repository.ReservationRepository;
+import com.reservation.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,9 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
 
-import static com.utils.ReservationConsts.UNABLE_TO_DELETE_RESERVATION;
-import static com.utils.ReservationConsts.UNABLE_TO_RETRIEVE_RESERVATION;
-import static com.utils.ReservationConsts.UNABLE_TO_SAVE_RESERVATION;
+import static com.reservation.utils.ReservationConsts.UNABLE_TO_DELETE_RESERVATION;
+import static com.reservation.utils.ReservationConsts.UNABLE_TO_RETRIEVE_RESERVATION;
+import static com.reservation.utils.ReservationConsts.UNABLE_TO_SAVE_RESERVATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -126,7 +127,7 @@ class ReservationBusinessLogicTest {
 
         assertEquals(reservationLoginRecord.reference(), reservation.reference());
         assertEquals(reservationInformationRecord.price(), reservation.price());
-        assertEquals(reservationInformationRecord.plane(), 1);
+        assertEquals(1, reservationInformationRecord.plane());
         assertEquals(reservationInformationRecord.passengerClass(), reservation.passengerClass());
 
     }

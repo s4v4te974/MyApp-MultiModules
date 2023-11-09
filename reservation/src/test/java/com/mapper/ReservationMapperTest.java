@@ -1,10 +1,11 @@
 package com.mapper;
 
-import com.dto.ReservationInformationRecord;
-import com.dto.ReservationRecord;
-import com.entity.Account;
-import com.entity.Plane;
-import com.entity.Reservation;
+import com.reservation.dto.ReservationInformationRecord;
+import com.reservation.dto.ReservationRecord;
+import com.account.entity.Account;
+import com.flight.entity.Plane;
+import com.reservation.entity.Reservation;
+import com.reservation.mapper.ReservationMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;

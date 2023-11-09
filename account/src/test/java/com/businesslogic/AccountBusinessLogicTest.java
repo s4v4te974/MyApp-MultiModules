@@ -1,12 +1,13 @@
 package com.businesslogic;
 
 
-import com.dto.AccountRecord;
-import com.entity.Account;
-import com.enums.Role;
-import com.exception.AccountException;
-import com.mapper.AccountMapper;
-import com.repository.AccountRepository;
+import com.account.businesslogic.AccountBusinessLogic;
+import com.account.dto.AccountRecord;
+import com.account.entity.Account;
+import com.account.enums.Role;
+import com.account.exception.AccountException;
+import com.account.mapper.AccountMapper;
+import com.account.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -21,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.utils.AccountConst.DELETE_ERROR;
-import static com.utils.AccountConst.DUPLICATION_EXCEPTION;
-import static com.utils.AccountConst.PERSIST_ERROR;
-import static com.utils.AccountConst.RETRIEVE_ERROR;
+import static com.account.utils.AccountConst.DELETE_ERROR;
+import static com.account.utils.AccountConst.DUPLICATION_EXCEPTION;
+import static com.account.utils.AccountConst.PERSIST_ERROR;
+import static com.account.utils.AccountConst.RETRIEVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

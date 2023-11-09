@@ -1,14 +1,14 @@
 package com.service;
 
 
-import com.dto.SearchCriteria;
-import com.entity.Cities;
-import com.entity.Plane;
-import com.enums.PassengerClass;
-import com.exception.FlightException;
-import com.repository.CitiesRepository;
-import com.repository.PlaneRepository;
-import com.service.serviceimpl.FlightServiceImpl;
+import com.flight.dto.SearchCriteria;
+import com.flight.entity.Cities;
+import com.flight.entity.Plane;
+import com.flight.enums.PassengerClass;
+import com.flight.exception.FlightException;
+import com.flight.repository.CitiesRepository;
+import com.flight.repository.PlaneRepository;
+import com.flight.service.serviceimpl.FlightServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
-import static com.utils.FlightConsts.UNABLE_TO_FIND_PLANE;
-import static com.utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
+import static com.flight.utils.FlightConsts.UNABLE_TO_CALCULATE_PRICE;
+import static com.flight.utils.FlightConsts.UNABLE_TO_FIND_PLANE;
+import static com.flight.utils.FlightConsts.UNABLE_TO_RETRIEVE_CITIES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

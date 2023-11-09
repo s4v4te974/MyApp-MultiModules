@@ -1,11 +1,12 @@
 package com.businesslogic;
 
-import com.dto.ProposedFlight;
-import com.dto.SearchCriteria;
-import com.entity.Plane;
-import com.enums.PassengerClass;
-import com.exception.FlightException;
-import com.service.FlightService;
+import com.flight.businesslogic.FlightBusinessLogic;
+import com.flight.dto.ProposedFlight;
+import com.flight.dto.SearchCriteria;
+import com.flight.entity.Plane;
+import com.flight.enums.PassengerClass;
+import com.flight.exception.FlightException;
+import com.flight.service.FlightService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

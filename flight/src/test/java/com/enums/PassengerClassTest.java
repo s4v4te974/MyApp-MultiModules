@@ -1,5 +1,6 @@
 package com.enums;
 
+import com.flight.enums.PassengerClass;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
